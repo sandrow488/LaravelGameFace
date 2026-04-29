@@ -37,43 +37,51 @@ export default function GameChat({ gameSessionId, currentUser }) {
 
         if (!window.Echo) return;
 
-        // 2. Suscribirse al PresenceChannel de la sesión
+        // 2. Suscribirse al PresenceChannel de la sesión (blindado para que,
+        //    si falla WebSocket/cliente, no rompa el render del resto).
         console.log(`Uniéndose al canal de presencia: game.${gameSessionId}`);
-        const channel = window.Echo.join(`game.${gameSessionId}`);
+        let channel = null;
+        try {
+            channel = window.Echo.join(`game.${gameSessionId}`);
 
-        channel
-            .here((users) => {
-                setUsersOnline(users);
-            })
-            .joining((user) => {
-                setUsersOnline((prev) => [...prev, user]);
-                setMessages((prev) => [...prev, {
-                    id: Date.now(),
-                    type: 'system',
-                    content: `${user.name} se ha unido`
-                }]);
-            })
-            .leaving((user) => {
-                setUsersOnline((prev) => prev.filter(u => u.id !== user.id));
-                setMessages((prev) => [...prev, {
-                    id: Date.now(),
-                    type: 'system',
-                    content: `${user.name} ha salido`
-                }]);
-            })
-            .listen('GameMessageSent', (e) => {
-                console.log("Nuevo mensaje recibido en sesión:", e);
-                setMessages((prev) => [...prev, {
-                    id: e.id,
-                    type: 'user',
-                    content: e.message,
-                    user: e.user,
-                    created_at: e.created_at
-                }]);
-            });
+            channel
+                .here((users) => {
+                    setUsersOnline(users);
+                })
+                .joining((user) => {
+                    setUsersOnline((prev) => [...prev, user]);
+                    setMessages((prev) => [...prev, {
+                        id: Date.now(),
+                        type: 'system',
+                        content: `${user.name} se ha unido`
+                    }]);
+                })
+                .leaving((user) => {
+                    setUsersOnline((prev) => prev.filter(u => u.id !== user.id));
+                    setMessages((prev) => [...prev, {
+                        id: Date.now(),
+                        type: 'system',
+                        content: `${user.name} ha salido`
+                    }]);
+                })
+                .listen('GameMessageSent', (e) => {
+                    console.log("Nuevo mensaje recibido en sesión:", e);
+                    setMessages((prev) => [...prev, {
+                        id: e.id,
+                        type: 'user',
+                        content: e.message,
+                        user: e.user,
+                        created_at: e.created_at
+                    }]);
+                });
+        } catch (err) {
+            console.error("Fallo al suscribirse al canal de presencia:", err);
+        }
 
         return () => {
-            window.Echo.leave(`game.${gameSessionId}`);
+            if (channel) {
+                window.Echo.leave(`game.${gameSessionId}`);
+            }
         };
     }, [gameSessionId]);
 

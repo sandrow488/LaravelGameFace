@@ -53,7 +53,12 @@ class FaceVerificationController extends Controller
                 'image1', fopen($enrolledImagePath, 'r'), 'enrolled.jpg'
             )->attach(
                 'image2', fopen($tempImage->getPathname(), 'r'), $tempImage->getClientOriginalName()
-            )->post('http://localhost:8001/verify');
+            )
+            // Si el microservicio Python no está disponible, evita que el frontend se quede "Analizando..."
+            // por demasiado tiempo.
+            ->timeout(3)
+            ->connectTimeout(1)
+            ->post('http://localhost:8001/verify');
 
             if ($response->successful()) {
                 $data = $response->json();

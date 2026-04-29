@@ -72,6 +72,19 @@ export default function Play({ auth, game }) {
         >
             <Head title={`Jugando: ${game.title}`} />
 
+            {/* DEBUG BYPASS BUTTON */}
+            {!isVerified && (
+                <div className="fixed bottom-4 left-4 z-[9999]">
+                    <button 
+                        onClick={() => setIsVerified(true)}
+                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-bold shadow-2xl border-2 border-white animate-pulse"
+                    >
+                        DEBUG: SALTAR VERIFICACIÓN
+                    </button>
+                </div>
+            )}
+
+
             <div className="py-8 bg-gray-100 min-h-[calc(100vh-73px)]">
                 <div className="max-w-[1400px] mx-auto sm:px-6 lg:px-8 h-full flex flex-col">
                     {!game.is_published && (
@@ -135,7 +148,7 @@ export default function Play({ auth, game }) {
                                 <div className="relative w-full flex-grow bg-black shadow-inner" style={{ minHeight: '65vh' }}>
                                     <iframe 
                                         id="game-iframe"
-                                        src={`${game.url_path}?v=${Date.now()}`} 
+                                        src="/Juego3D/index.html" 
                                         className="absolute top-0 left-0 w-full h-full border-0 z-10"
                                         title={`Juego: ${game.title}`}
                                         allowFullScreen
