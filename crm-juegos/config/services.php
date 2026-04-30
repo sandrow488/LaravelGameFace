@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'facial' => [
+        'url' => env('FACIAL_SERVICE_URL', 'http://localhost:8001'),
+    ],
+
 ];

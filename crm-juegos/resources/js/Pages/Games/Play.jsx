@@ -41,9 +41,9 @@ export default function Play({ auth, game }) {
             }
 
         } catch (err) {
+            console.error("Fallo de Seguridad (Detalles):", err.response?.data || err);
             const errorMsg = err.response?.data?.error || err.message || 'Error durante la verificación.';
             setVerifyError(errorMsg);
-            console.error("Fallo de Seguridad:", err);
         } finally {
             setIsVerifying(false);
         }
@@ -72,18 +72,6 @@ export default function Play({ auth, game }) {
         >
             <Head title={`Jugando: ${game.title}`} />
 
-            {/* DEBUG BYPASS BUTTON */}
-            {!isVerified && (
-                <div className="fixed bottom-4 left-4 z-[9999]">
-                    <button 
-                        onClick={() => setIsVerified(true)}
-                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-bold shadow-2xl border-2 border-white animate-pulse"
-                    >
-                        DEBUG: SALTAR VERIFICACIÓN
-                    </button>
-                </div>
-            )}
-
 
             <div className="py-8 bg-gray-100 min-h-[calc(100vh-73px)]">
                 <div className="max-w-[1400px] mx-auto sm:px-6 lg:px-8 h-full flex flex-col">
@@ -97,23 +85,8 @@ export default function Play({ auth, game }) {
                         <div className="bg-white p-8 shadow-xl rounded-2xl max-w-lg mx-auto text-center border-t-8 border-indigo-600">
                             <h3 className="text-xl font-bold mb-2">Punto de Control</h3>
                             
-                            {!auth.user.face_image_path ? (
-                                <div className="mt-4">
-                                    <div className="mb-6 p-4 bg-amber-50 text-amber-800 rounded-xl border border-amber-200 flex flex-col items-center">
-                                        <svg className="w-12 h-12 mb-3 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                        <p className="font-semibold">¡Falta tu Foto de Seguridad!</p>
-                                        <p className="text-sm mt-1 text-amber-700">No hemos encontrado un registro de tu rostro. Debes enrolarte en tu perfil antes de poder jugar.</p>
-                                    </div>
-                                    <Link 
-                                        href={route('profile.edit')}
-                                        className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg"
-                                    >
-                                        Ir a mi Perfil para Enrolarme
-                                    </Link>
-                                </div>
-                            ) : (
                                 <>
-                                    <p className="text-gray-600 mb-6">Por motivos de seguridad, debemos verificar que eres tú antes de acceder a la simulación.</p>
+                                    <p className="text-gray-600 mb-6">Por motivos de seguridad, debemos verificar tu identidad comparando con la foto que tomaste al iniciar sesión.</p>
                                     
                                     {verifyError && (
                                         <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm font-semibold">
@@ -124,10 +97,9 @@ export default function Play({ auth, game }) {
                                     <WebcamCapture 
                                         onCapture={handleVerification}
                                         isProcessing={isVerifying}
-                                        buttonText="Entrar al Juego"
+                                        buttonText="Verificar y Entrar"
                                     />
                                 </>
-                            )}
                         </div>
                     ) : (
                         <div className="flex-grow flex bg-white overflow-hidden shadow-2xl rounded-3xl border border-gray-200/60 ring-1 ring-black/5">

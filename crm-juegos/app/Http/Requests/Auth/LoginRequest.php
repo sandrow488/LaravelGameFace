@@ -30,6 +30,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ];
     }
 

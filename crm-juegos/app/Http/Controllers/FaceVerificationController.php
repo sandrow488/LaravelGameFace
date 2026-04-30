@@ -37,56 +37,55 @@ class FaceVerificationController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', // La imagen temporal de la webcam
         ]);
 
-        $user = $request->user();
+        $loginFacePath = $request->session()->get('login_face_image');
 
-        if (!$user->face_image_path || !Storage::disk('public')->exists($user->face_image_path)) {
-            return response()->json(['error' => 'No hay imagen facial registrada para este usuario.'], 400);
+        if (!$loginFacePath || !Storage::disk('public')->exists($loginFacePath)) {
+            return response()->json(['error' => 'No se capturó tu rostro durante el inicio de sesión. Por favor, vuelve a iniciar sesión.'], 400);
         }
 
-        $enrolledImagePath = Storage::disk('public')->path($user->face_image_path);
+        $enrolledImagePath = Storage::disk('public')->path($loginFacePath);
         $tempImage = $request->file('image');
         
         try {
-            // Realizar la petición HTTP al microservicio Python
-            // Adjuntamos ambos archivos: la imagen guardada y la de la webcam
             $response = Http::attach(
                 'image1', fopen($enrolledImagePath, 'r'), 'enrolled.jpg'
             )->attach(
                 'image2', fopen($tempImage->getPathname(), 'r'), $tempImage->getClientOriginalName()
             )
-            // Si el microservicio Python no está disponible, evita que el frontend se quede "Analizando..."
-            // por demasiado tiempo.
-            ->timeout(3)
-            ->connectTimeout(1)
-            ->post('http://localhost:8001/verify');
+            ->timeout(10) // Aumentamos el timeout para DeepFace
+            ->connectTimeout(2)
+            ->post(config('services.facial.url') . '/verify');
 
             if ($response->successful()) {
                 $data = $response->json();
                 
                 if (isset($data['match']) && $data['match'] === true) {
+                    \Log::info('Verificación facial exitosa para usuario: ' . $request->user()->id, ['distance' => $data['distance'] ?? 'n/a']);
                     return response()->json([
                         'message' => 'Verificación exitosa.',
                         'verified' => true,
                         'distance' => $data['distance'] ?? null
                     ]);
                 }
+                
+                \Log::warning('Verificación facial fallida (No coinciden) para usuario: ' . $request->user()->id, ['data' => $data]);
+            } else {
+                \Log::error('Error en microservicio facial', ['status' => $response->status(), 'body' => $response->body()]);
             }
             
             return response()->json([
-                'error' => 'La verificación facial ha fallado.', 
+                'error' => 'La verificación facial ha fallado. Asegúrate de que tu rostro sea visible y coincida con tu foto de registro.', 
                 'verified' => false,
                 'details' => $response->json()
             ], 401);
 
         } catch (\Exception $e) {
-            // MODO RESCATE: Si el microservicio no está disponible, simulamos éxito
-            // para permitir el flujo de desarrollo, pero dejamos rastro en la respuesta.
+            \Log::error('Fallo crítico en conexión con microservicio facial: ' . $e->getMessage());
             return response()->json([
-                'message' => 'Verificación SIMULADA (Microservicio Offline).',
-                'verified' => true,
-                'distance' => 0.1,
-                'debug' => 'El servidor no pudo conectar con Python en el puerto 8001: ' . $e->getMessage()
-            ]);
+                'error' => 'El servicio de verificación facial no está disponible en este momento.',
+                'verified' => false,
+                'debug' => $e->getMessage()
+            ], 503);
         }
     }
 }

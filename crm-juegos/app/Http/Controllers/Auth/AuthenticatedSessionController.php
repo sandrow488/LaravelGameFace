@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -32,6 +33,12 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        // Almacenar imagen de validación temporal en disco y ruta en la sesión
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('temp_faces', 'public');
+            $request->session()->put('login_face_image', $path);
+        }
 
         return redirect()->intended(route('dashboard', absolute: false));
     }
