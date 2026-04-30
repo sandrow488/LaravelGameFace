@@ -85,7 +85,8 @@ curl -X POST "http://localhost:8001/verify" \
 
 ---
 
-##Sección 1: Gestión con MCP (Model Context Protocol)
+## Sección 1: Gestión con MCP (Model Context Protocol)
+
 Esta sección demuestra cómo utilizas herramientas de IA conectadas a la API de GitHub para gestionar el flujo de trabajo del repositorio.
 
 Consulta de Pull Requests:
@@ -97,7 +98,6 @@ Explicación: Se utiliza la herramienta mcp__github__list_pull_requests para ver
 Sincronización del Código (Git Push):
 
 <img width="677" height="582" alt="image" src="https://github.com/user-attachments/assets/a0851854-6873-4b4d-a690-c04fcc8fa8f5" />
-
 
 Explicación: Tras realizar los cambios locales en el microservicio, se sube la rama feature/prueba-evento al origen. Aquí se observa el proceso de enumeración y escritura de objetos en el servidor remoto.
 
