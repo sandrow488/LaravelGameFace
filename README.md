@@ -130,7 +130,7 @@ Ejecución del script consumer.py en el microservicio. Se observa cómo el servi
 
 ## Guía de comandos para el inicio del proyecto
 
-Siga estos pasos de forma secuencial para poner en marcha todos los componentes del sistema.
+Comandos para iniciarlo
 
 ### 1. Configuración del entorno Laravel
 
