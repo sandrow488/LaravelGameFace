@@ -93,20 +93,20 @@ Consulta de Pull Requests:
 
 <img width="929" height="324" alt="image" src="https://github.com/user-attachments/assets/4cd34db6-014b-4272-97c6-2af682cf77ab" />
 
-Explicación: Se utiliza la herramienta mcp__github__list_pull_requests para verificar si existen tareas pendientes. El sistema confirma que la lista está vacía, permitiendo iniciar una nueva rama sin conflictos.
+Se utiliza la herramienta mcp__github__list_pull_requests para verificar si existen tareas pendientes. El sistema confirma que la lista está vacía, permitiendo iniciar una nueva rama sin conflictos.
 
 Sincronización del Código (Git Push):
 
 <img width="677" height="582" alt="image" src="https://github.com/user-attachments/assets/a0851854-6873-4b4d-a690-c04fcc8fa8f5" />
 
-Explicación: Tras realizar los cambios locales en el microservicio, se sube la rama feature/prueba-evento al origen. Aquí se observa el proceso de enumeración y escritura de objetos en el servidor remoto.
+Tras realizar los cambios locales en el microservicio, se sube la rama feature/prueba-evento al origen. Aquí se observa el proceso de enumeración y escritura de objetos en el servidor remoto.
 
 Confirmación de la Pull Request:
 
 <img width="744" height="405" alt="image" src="https://github.com/user-attachments/assets/a6c627e3-23de-4966-b87f-758116c9c516" />
 
 
-Explicación: Una vez subida la rama, el asistente MCP detecta y muestra los detalles de la PR #1. Se confirma el estado "Open", el autor y las ramas de origen/destino, validando la integración total entre el chat y el repositorio.
+Una vez subida la rama, el asistente MCP detecta y muestra los detalles de la PR #1. Se confirma el estado "Open", el autor y las ramas de origen/destino, validando la integración total entre el chat y el repositorio.
 
 ---
 
@@ -117,14 +117,14 @@ Publicación desde el Panel (Productor):
 
 <img width="899" height="783" alt="image" src="https://github.com/user-attachments/assets/bddee5a1-98f9-4925-be0c-bccd51f9891f" />
 
-Explicación: Uso de la interfaz de gestión de RabbitMQ (puerto 15672) para publicar un mensaje manualmente en la cola test. Se define el payload con el mensaje de éxito del test.
+Uso de la interfaz de gestión de RabbitMQ (puerto 15672) para publicar un mensaje manualmente en la cola test. Se define el payload con el mensaje de éxito del test.
 
 Recepción en el Microservicio (Consumidor):
 
 <img width="618" height="159" alt="image" src="https://github.com/user-attachments/assets/cd67c344-fd3e-46eb-aecb-dd96e915a9cb" />
 
 
-Explicación: Ejecución del script consumer.py en el microservicio. Se observa cómo el servicio está a la escucha y procesa instantáneamente el JSON enviado desde RabbitMQ, imprimiendo el mensaje: "profe, la practica funciona al 100%".
+Ejecución del script consumer.py en el microservicio. Se observa cómo el servicio está a la escucha y procesa instantáneamente el JSON enviado desde RabbitMQ, imprimiendo el mensaje: "profe, la practica funciona al 100%".
 
 ---
 
