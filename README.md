@@ -13,7 +13,6 @@ LaravelGameFace combina:
 
 El núcleo del sistema es una aplicación backend desarrollada con el framework Laravel 12, la cual gestiona la lógica de negocio, la base de datos relacional y la autenticación de usuarios. La interfaz de usuario está construida con React, utilizando Inertia.js para permitir una navegación fluida de tipo SPA sin abandonar el ecosistema de rutas de Laravel.
 
-_(Nota: En futuras actualizaciones se añadirá la documentación en detalle sobre la arquitectura orientada a eventos con RabbitMQ y la automatización con Model Context Protocol - MCP)._
 
 ---
 
@@ -83,6 +82,49 @@ curl -X POST "http://localhost:8001/verify" \
 
 - `match`: Boolean si las imágenes coinciden (threshold ~0.6)
 - `distance`: Distancia euclídea entre descriptores (menor = más similar)
+
+---
+
+##Sección 1: Gestión con MCP (Model Context Protocol)
+Esta sección demuestra cómo utilizas herramientas de IA conectadas a la API de GitHub para gestionar el flujo de trabajo del repositorio.
+
+Consulta de Pull Requests:
+
+<img width="929" height="324" alt="image" src="https://github.com/user-attachments/assets/4cd34db6-014b-4272-97c6-2af682cf77ab" />
+
+Explicación: Se utiliza la herramienta mcp__github__list_pull_requests para verificar si existen tareas pendientes. El sistema confirma que la lista está vacía, permitiendo iniciar una nueva rama sin conflictos.
+
+Sincronización del Código (Git Push):
+
+<img width="677" height="582" alt="image" src="https://github.com/user-attachments/assets/a0851854-6873-4b4d-a690-c04fcc8fa8f5" />
+
+
+Explicación: Tras realizar los cambios locales en el microservicio, se sube la rama feature/prueba-evento al origen. Aquí se observa el proceso de enumeración y escritura de objetos en el servidor remoto.
+
+Confirmación de la Pull Request:
+
+<img width="744" height="405" alt="image" src="https://github.com/user-attachments/assets/a6c627e3-23de-4966-b87f-758116c9c516" />
+
+
+Explicación: Una vez subida la rama, el asistente MCP detecta y muestra los detalles de la PR #1. Se confirma el estado "Open", el autor y las ramas de origen/destino, validando la integración total entre el chat y el repositorio.
+
+---
+
+## Sección 2: Mensajería con RabbitMQ
+Esta sección valida la arquitectura de microservicios mediante el envío y recepción de mensajes asíncronos.
+
+Publicación desde el Panel (Productor):
+
+<img width="899" height="783" alt="image" src="https://github.com/user-attachments/assets/bddee5a1-98f9-4925-be0c-bccd51f9891f" />
+
+Explicación: Uso de la interfaz de gestión de RabbitMQ (puerto 15672) para publicar un mensaje manualmente en la cola test. Se define el payload con el mensaje de éxito del test.
+
+Recepción en el Microservicio (Consumidor):
+
+<img width="618" height="159" alt="image" src="https://github.com/user-attachments/assets/cd67c344-fd3e-46eb-aecb-dd96e915a9cb" />
+
+
+Explicación: Ejecución del script consumer.py en el microservicio. Se observa cómo el servicio está a la escucha y procesa instantáneamente el JSON enviado desde RabbitMQ, imprimiendo el mensaje: "profe, la practica funciona al 100%".
 
 ---
 
