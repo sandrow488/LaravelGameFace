@@ -9,19 +9,10 @@ use App\Http\Controllers\FaceVerificationController;
 use App\Http\Controllers\EmotionController;
 use App\Http\Controllers\ChatController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
-// Usamos auth:sanctum, la cual gestiona automáticamente la detección de sesión
-// para clientes SPA/Inertia alojados en el mismo dominio o tokens si es externo.
+
+
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/games/start', function (Request $request) {
@@ -36,7 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
         $game = Game::find($request->game_id);
         $user = auth()->user();
 
-        // Verificar si el juego está publicado o si el usuario tiene rol de gestor/administrador para probarlo
+        
         $userRoles = $user->roles->pluck('name')->toArray();
         $canPreview = in_array('administrador', $userRoles) || in_array('gestor', $userRoles);
 
@@ -44,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
             return response()->json(['error' => 'No tienes permiso para jugar a este juego o no está publicado.'], 403);
         }
 
-        // Crear la sesión de juego en la base de datos
+        
         $session = GameSession::create([
             'user_id' => $user->id,
             'game_id' => $game->id,
@@ -70,12 +61,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
         $session = GameSession::find($request->session_id);
 
-        // Seguridad: Verificar que la sesión pertenece al usuario autenticado
+        
         if ($session->user_id !== auth()->id()) {
             return response()->json(['error' => 'No autorizado para modificar esta sesión.'], 403);
         }
 
-        // Si ya había terminado, no permitimos guardar de nuevo (evitar trampas básicas)
+        
         if ($session->ended_at) {
             return response()->json(['error' => 'La sesión ya había finalizado.'], 400);
         }
@@ -84,7 +75,7 @@ Route::middleware('auth:sanctum')->group(function () {
         $startedAt = Carbon::parse($session->started_at);
         $durationSeconds = $startedAt->diffInSeconds($endedAt);
 
-        // Guardar resultado final, fecha y duración
+        
         $session->update([
             'ended_at' => $endedAt,
             'duration_seconds' => $durationSeconds,

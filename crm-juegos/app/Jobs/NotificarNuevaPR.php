@@ -15,11 +15,7 @@ class NotificarNuevaPR implements ShouldQueue
 
     public $data;
 
-    /**
-     * Create a new job instance.
-     * 
-     * @param array $data Structure: ['event' => '...', 'repository' => '...', 'branch' => '...', 'author' => '...']
-     */
+    
     public function __construct(array $data = [])
     {
         $this->data = $data ?: [
@@ -30,13 +26,11 @@ class NotificarNuevaPR implements ShouldQueue
         ];
     }
 
-    /**
-     * Execute the job.
-     */
+    
     public function handle(): void
     {
         Log::info('Notificación de RabbitMQ enviada:', $this->data);
-        // Aquí es donde Laravel enviaría el evento a RabbitMQ automáticamente 
-        // gracias a la configuración QUEUE_CONNECTION=rabbitmq en el .env
+        
+        
     }
 }

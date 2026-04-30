@@ -8,7 +8,7 @@ export default function WebcamCapture({ onCapture, onCancel, buttonText = "Captu
 
     const startCamera = async () => {
         try {
-            if (streamRef.current) return; // Ya está iniciada
+            if (streamRef.current) return; 
 
             const mediaStream = await navigator.mediaDevices.getUserMedia({
                 video: { width: 320, height: 240, facingMode: "user" }
@@ -46,7 +46,7 @@ export default function WebcamCapture({ onCapture, onCancel, buttonText = "Captu
 
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-        // Draw the frame
+        
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         canvas.toBlob((blob) => {

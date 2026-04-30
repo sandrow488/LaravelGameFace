@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 
 class FaceVerificationController extends Controller
 {
+    // Registro
     public function enroll(Request $request)
     {
         $request->validate([
@@ -16,25 +17,26 @@ class FaceVerificationController extends Controller
 
         $user = $request->user();
 
-        // Eliminar imagen anterior si existe
+        
         if ($user->face_image_path && Storage::disk('public')->exists($user->face_image_path)) {
             Storage::disk('public')->delete($user->face_image_path);
         }
 
-        // Guardar la nueva imagen
+        
         $path = $request->file('image')->store('faces', 'public');
 
-        // Actualizar el usuario (usando save() para asegurar la persistencia)
+        
         $user->face_image_path = $path;
         $user->save();
 
         return back()->with('message', 'Imagen facial registrada correctamente');
     }
 
+    // Verificación
     public function verify(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', // La imagen temporal de la webcam
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048', 
         ]);
 
         $loginFacePath = $request->session()->get('login_face_image');
@@ -52,7 +54,7 @@ class FaceVerificationController extends Controller
             )->attach(
                 'image2', fopen($tempImage->getPathname(), 'r'), $tempImage->getClientOriginalName()
             )
-            ->timeout(10) // Aumentamos el timeout para DeepFace
+            ->timeout(10) 
             ->connectTimeout(2)
             ->post(config('services.facial.url') . '/verify');
 

@@ -8,22 +8,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     * @param  string ...$roles
-     */
+    
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
         if (! $request->user()) {
             return redirect('login');
         }
 
-        // Recuperar los roles del usuario autenticado
+        
         $userRoles = $request->user()->roles->pluck('name')->toArray();
 
-        // Si el usuario no tiene al menos uno de los roles requeridos, abortar con error 403
+        
         $hasRole = false;
         foreach ($roles as $role) {
             if (in_array($role, $userRoles)) {

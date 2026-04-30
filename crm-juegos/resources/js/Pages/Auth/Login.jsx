@@ -20,7 +20,7 @@ export default function Login({ status, canResetPassword }) {
 
     const handleNext = (e) => {
         e.preventDefault();
-        // Básica validación frontend antes de pasar a la cámara
+        
         if (!data.email || !data.password) {
             return;
         }
@@ -29,16 +29,16 @@ export default function Login({ status, canResetPassword }) {
 
     const handleCapture = (file) => {
         setData('image', file);
-        // Inertia no envía inmediatamente si llamamos post aquí porque setData es asíncrono
-        // Pero podemos pasar el file directamente al post en una copia de la data si queremos,
-        // o depender del useEffect. Lo más seguro es usar el router o post con el dato directo.
         
-        // Mejor mandarlo directamente con la función post de useForm
-        // Sin embargo, useForm.post toma los datos actuales del estado. 
-        // Para asegurarnos, usamos transform
+        
+        
+        
+        
+        
+        
     };
 
-    // Usamos useEffect para lanzar el POST solo cuando la imagen ya está en el estado de Inertia (FormData)
+    
     useEffect(() => {
         if (data.image) {
             post(route('login'), {
@@ -46,7 +46,7 @@ export default function Login({ status, canResetPassword }) {
                 onFinish: () => reset('password'),
                 onError: (err) => {
                     console.error("Detalles del error de login:", err);
-                    setData('image', null); // Limpiar para que pueda reintentar
+                    setData('image', null); 
                     setStep(1);
                 },
             });

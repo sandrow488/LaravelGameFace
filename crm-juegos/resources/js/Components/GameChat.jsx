@@ -20,14 +20,14 @@ export default function GameChat({ gameSessionId, currentUser }) {
     useEffect(() => {
         if (!gameSessionId) return;
 
-        // 1. Cargar historial de mensajes filtrado por esta sesión de juego
-        // Cumplimos con la regla: "si salgo y vuelvo a entrar deben estar"
+        
+        
         axios.get('/messages', { params: { game_session_id: gameSessionId } })
             .then(res => {
                 const history = res.data.map(m => ({
                     id: m.id,
                     type: 'user',
-                    content: m.message, // El modelo ChatMessage usa 'message'
+                    content: m.message, 
                     user: m.user,
                     created_at: m.created_at
                 }));
@@ -37,8 +37,8 @@ export default function GameChat({ gameSessionId, currentUser }) {
 
         if (!window.Echo) return;
 
-        // 2. Suscribirse al PresenceChannel de la sesión (blindado para que,
-        //    si falla WebSocket/cliente, no rompa el render del resto).
+        
+        
         console.log(`Uniéndose al canal de presencia: game.${gameSessionId}`);
         let channel = null;
         try {
@@ -99,8 +99,8 @@ export default function GameChat({ gameSessionId, currentUser }) {
                 message: currentMsg
             });
             
-            // El mensaje se recibe vía WebSocket por el canal de presencia,
-            // pero lo añadimos localmente si queremos feedback instantáneo (opcional).
+            
+            
             const newMessage = res.data.message;
             setMessages((prev) => [...prev, {
                 id: newMessage.id,

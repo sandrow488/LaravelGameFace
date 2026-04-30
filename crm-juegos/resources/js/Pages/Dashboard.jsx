@@ -15,7 +15,7 @@ export default function Dashboard({ auth, games = [] }) {
         >
             <Head title="Panel" />
 
-            {/* Background elements for premium feel */}
+            {}
             <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-br from-indigo-50/50 via-purple-50/50 to-white -z-10"></div>
             <div className="absolute top-40 right-20 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
             <div className="absolute top-60 left-20 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '2s' }}></div>
@@ -23,7 +23,7 @@ export default function Dashboard({ auth, games = [] }) {
             <div className="py-12 relative z-10">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     
-                    {/* Welcome Banner */}
+                    {}
                     <div className="backdrop-blur-md bg-white/80 overflow-hidden shadow-2xl sm:rounded-2xl mb-12 border border-white/50">
                         <div className="p-8 text-gray-900 flex flex-col md:flex-row items-center justify-between">
                             <div>
@@ -64,21 +64,21 @@ export default function Dashboard({ auth, games = [] }) {
                                     key={game.id} 
                                     className="group relative bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-gray-100/50"
                                 >
-                                    {/* Abstract Graphic Header */}
+                                    {}
                                     <div className={`h-48 flex items-center justify-center bg-gradient-to-br ${
                                         idx % 3 === 0 ? 'from-indigo-500 to-purple-600' : 
                                         idx % 3 === 1 ? 'from-blue-400 to-emerald-400' : 
                                         'from-rose-400 to-orange-400'
                                     } relative overflow-hidden`}>
                                         <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px]"></div>
-                                        {/* Stylized Controller Icon */}
+                                        {}
                                         <svg className="w-24 h-24 text-white/80 drop-shadow-md z-10 transform group-hover:scale-110 transition-transform duration-500" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M21.58,12.58l-3-8A2,2,0,0,0,16.7,3H7.3a2,2,0,0,0-1.88,1.58l-3,8a2,2,0,0,0,.61,2A1.91,1.91,0,0,0,4.5,15H5a2,2,0,0,0,1.91-1.42L7.64,11h8.72l.73,2.58A2,2,0,0,0,19,15h.5a1.91,1.91,0,0,0,1.47-.42A2,2,0,0,0,21.58,12.58ZM10,8H8V6h2Zm2,2H10V8h2Zm0-2V6h2V8ZM16.5,9A1.5,1.5,0,1,1,18,7.5,1.5,1.5,0,0,1,16.5,9Zm0-3A1.5,1.5,0,1,1,18,4.5,1.5,1.5,0,0,1,16.5,6Z"/>
                                         </svg>
                                     </div>
                                     
                                     <div className="p-8 flex flex-col h-full bg-white relative">
-                                        {/* Play button float */}
+                                        {}
                                         <div className="absolute -top-8 right-6">
                                             <Link 
                                                 href={route('games.play', game.id)}

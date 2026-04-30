@@ -1,3 +1,4 @@
+// Imports
 import React, { useState, useEffect, useRef } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
@@ -8,31 +9,33 @@ import axios from 'axios';
 import * as faceapi from 'face-api.js';
 
 export default function Play({ auth, game }) {
+    // State
     const [isVerified, setIsVerified] = useState(false);
     const [isVerifying, setIsVerifying] = useState(false);
     const [verifyError, setVerifyError] = useState('');
     const [sessionId, setSessionId] = useState(null);
     
-    // Referencia de video para el análisis de emociones continuo
+    
     const videoRef = useRef(null);
 
+    // Logic
     const handleVerification = async (file) => {
         setIsVerifying(true);
         setVerifyError('');
         
         try {
-            // 1. Preparar el formulario con la imagen para enviarla al servidor
+            
             const formData = new FormData();
             formData.append('image', file);
 
-            // 2. Enviar a Laravel para que este consulte al microservicio Python
-            // Cumplimos la regla: Laravel toma la decisión de acceso
+            
+            
             const verifyRes = await axios.post('/api/face/verify', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 
             if (verifyRes.data.verified) {
-                // 3. Si Laravel aprueba la identidad, iniciamos la sesión de juego
+                
                 const sessionRes = await axios.post('/games/start', { game_id: game.id });
                 setSessionId(sessionRes.data.session_id);
                 setIsVerified(true);
@@ -49,9 +52,10 @@ export default function Play({ auth, game }) {
         }
     };
 
-    // La detección de emociones ahora se maneja de forma aislada en <EmotionOverlay />
-    // para evitar re-renders innecesarios que afecten al juego 3D
+    
+    
 
+    // Render
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -105,7 +109,7 @@ export default function Play({ auth, game }) {
                         <div className="flex-grow flex bg-white overflow-hidden shadow-2xl rounded-3xl border border-gray-200/60 ring-1 ring-black/5">
                             
                                 <div className="flex-1 flex flex-col relative w-full border-r border-gray-200">
-                                    {/* Componente aislado para emociones (no afecta al render del juego) */}
+                                    {}
                                     <EmotionOverlay sessionId={sessionId} />
                                 
                                 <div className="px-6 py-4 bg-gray-900 border-b border-gray-800 flex justify-between items-center z-10">

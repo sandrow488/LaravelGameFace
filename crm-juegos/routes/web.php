@@ -24,7 +24,7 @@ Route::get('/play/{game}', function (\App\Models\Game $game) {
     $userRoles = auth()->user()->roles->pluck('name')->toArray();
     $canPreview = in_array('administrador', $userRoles) || in_array('gestor', $userRoles);
     
-    // Si no está publicado y el usuario no tiene permisos de gestor/admin, bloqueamos el acceso
+    
     if (!$game->is_published && !$canPreview) {
         abort(403, 'No tienes permiso para ver este juego porque no está publicado.');
     }
@@ -39,14 +39,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-     // Rutas de Reconocimiento Facial y Juego (Alineadas con la auditoría usando prefijo /api)
+     
      Route::post('/face/enroll', [FaceVerificationController::class, 'enroll'])->name('face.enroll');
      Route::post('/api/face/verify', [FaceVerificationController::class, 'verify'])->name('face.verify');
     Route::post('/game-sessions/{id}/emotions', [EmotionController::class, 'store'])->name('emotions.store');
     Route::get('/messages', [ChatController::class, 'index'])->name('chat.index');
     Route::post('/messages', [ChatController::class, 'store'])->name('chat.store');
 
-    // Rutas de Sesión de Juego (Movidas desde API para compartir sesión)
+    
     Route::post('/games/start', function (Illuminate\Http\Request $request) {
         $game = \App\Models\Game::findOrFail($request->game_id);
         $session = \App\Models\GameSession::create([

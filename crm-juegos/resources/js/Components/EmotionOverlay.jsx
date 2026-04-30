@@ -13,14 +13,14 @@ export default function EmotionOverlay({ sessionId }) {
             if (!sessionId) return;
 
             try {
-                // Cargar modelos necesarios
+                
                 const MODEL_URL = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
                 await Promise.all([
                     faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
                     faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL)
                 ]);
 
-                // Encender cámara silenciosamente
+                
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
                 if (videoRef.current) {
                     videoRef.current.srcObject = stream;
@@ -28,9 +28,9 @@ export default function EmotionOverlay({ sessionId }) {
 
                 let lastEmotionReported = null;
 
-                // Detección cada 5 segundos (Optimizado para no sobrecargar el hilo secundario)
+                
                 emotionInterval = setInterval(async () => {
-                    // Guarda de seguridad: Verificar que el video existe y está listo (readyState 4)
+                    
                     if (
                         !videoRef.current || 
                         videoRef.current.readyState !== 4 || 
@@ -65,7 +65,7 @@ export default function EmotionOverlay({ sessionId }) {
                                 const translated = emotionTranslations[dominantEmotion] || 'Estado: Normal';
                                 setCurrentEmotion(translated);
 
-                                // Reportar solo si cambia
+                                
                                 if (lastEmotionReported !== dominantEmotion) {
                                     axios.post(`/game-sessions/${sessionId}/emotions`, {
                                         emotion: dominantEmotion,

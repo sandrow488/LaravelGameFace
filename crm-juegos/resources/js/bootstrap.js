@@ -8,7 +8,7 @@ import Pusher from 'pusher-js';
 
 window.Pusher = Pusher;
 
-// Evita que el frontend se quede en blanco si faltan variables de entorno de Reverb.
+
 const reverbAppKey = import.meta.env.VITE_REVERB_APP_KEY;
 const reverbHost = import.meta.env.VITE_REVERB_HOST;
 const reverbScheme = import.meta.env.VITE_REVERB_SCHEME ?? 'https';

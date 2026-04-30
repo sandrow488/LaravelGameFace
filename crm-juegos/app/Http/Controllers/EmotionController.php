@@ -17,7 +17,7 @@ class EmotionController extends Controller
 
         $session = GameSession::findOrFail($id);
 
-        // Validar que la sesión pertenece al usuario autenticado
+        
         if ($session->user_id !== $request->user()->id) {
             return response()->json(['error' => 'No autorizado para esta sesión de juego'], 403);
         }

@@ -33,7 +33,7 @@ class ChatController extends Controller
             'message' => strip_tags($request->message),
         ]);
 
-        // Emitimos usando el nuevo evento GameMessageSent que usa PresenceChannel
+        
         broadcast(new GameMessageSent($message))->toOthers();
 
         return response()->json([

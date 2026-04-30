@@ -10,17 +10,13 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+    
     public function run(): void
     {
-        // 1. Crear Roles
         $adminRole = Role::firstOrCreate(['name' => 'administrador']);
         $gestorRole = Role::firstOrCreate(['name' => 'gestor']);
         $jugadorRole = Role::firstOrCreate(['name' => 'jugador']);
 
-        // 2. Crear Usuarios de prueba
         $admin = User::firstOrCreate(
             ['email' => 'admin@admin.com'],
             ['name' => 'Admin User', 'password' => Hash::make('password')]
@@ -39,7 +35,6 @@ class DatabaseSeeder extends Seeder
         );
         $jugador->roles()->syncWithoutDetaching([$jugadorRole->id]);
 
-        // 3. Crear Juegos de ejemplo (Apuntando todos al mismo build de Juego3D)
         $gamePath = '/juegos/base/index.html';
 
         $games = [

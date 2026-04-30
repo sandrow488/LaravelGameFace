@@ -25,7 +25,7 @@ export default function Edit({ auth, game }) {
                 <div className="max-w-4xl mx-auto sm:px-6 lg:px-8">
                     
                     <div className="bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-gray-100/50">
-                        {/* Header Artwork */}
+                        {}
                         <div className="h-32 bg-gradient-to-r from-amber-500 to-orange-500 relative flex items-center px-10">
                             <div className="absolute inset-0 bg-white/10 mix-blend-overlay backdrop-blur-[1px]"></div>
                             <svg className="w-16 h-16 text-white opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -45,7 +45,7 @@ export default function Edit({ auth, game }) {
                         <form onSubmit={handleSubmit} className="p-10 space-y-8">
                             
                             <div className="space-y-6">
-                                {/* Title */}
+                                {}
                                 <div className="relative">
                                     <label className="text-sm font-semibold text-gray-700 block mb-2">Título del Juego</label>
                                     <input
@@ -58,7 +58,7 @@ export default function Edit({ auth, game }) {
                                     {errors.title && <div className="text-red-500 text-xs mt-2 flex items-center"><svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>{errors.title}</div>}
                                 </div>
 
-                                {/* Description */}
+                                {}
                                 <div>
                                     <label className="text-sm font-semibold text-gray-700 block mb-2">Descripción Atractiva</label>
                                     <textarea
@@ -70,7 +70,7 @@ export default function Edit({ auth, game }) {
                                     {errors.description && <div className="text-red-500 text-xs mt-2 flex items-center"><svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>{errors.description}</div>}
                                 </div>
 
-                                {/* URL Path */}
+                                {}
                                 <div>
                                     <label className="text-sm font-semibold text-gray-700 block mb-2">Ruta de Assets (URL)</label>
                                     <div className="flex rounded-xl shadow-sm">
@@ -88,7 +88,7 @@ export default function Edit({ auth, game }) {
                                     {errors.url_path && <div className="text-red-500 text-xs mt-2 flex items-center"><svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"></path></svg>{errors.url_path}</div>}
                                 </div>
 
-                                {/* Publish Toggle */}
+                                {}
                                 <div className="flex items-center mt-6 p-4 rounded-xl border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer" onClick={() => setData('is_published', !data.is_published)}>
                                     <div className="flex items-center h-5">
                                         <input
@@ -106,7 +106,7 @@ export default function Edit({ auth, game }) {
                                 </div>
                             </div>
 
-                            {/* Actions */}
+                            {}
                             <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-100">
                                 <Link 
                                     href={route('games.index')}

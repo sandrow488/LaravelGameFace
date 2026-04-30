@@ -19,11 +19,7 @@ class GameSession extends Model
         'score',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
+    
     protected $casts = [
         'started_at' => 'datetime',
         'ended_at' => 'datetime',
