@@ -1,0 +1,10 @@
+# Controladores de la Aplicación
+
+Los controladores son el cerebro del backend. Reciben la petición del usuario, aplican reglas de validación, interactúan con la base de datos (Modelos) y con los microservicios, y devuelven una respuesta (JSON para React, o redirecciones).
+
+## Archivos Principales
+- `Auth/AuthenticatedSessionController.php`: Gestiona el inicio de sesión. Su particularidad es que intercepta la petición de login para guardar una foto temporal del usuario (usada luego para verificar que es la misma persona al entrar a un juego).
+- `ChatController.php`: Administra los mensajes de texto del chat en el juego. Guarda los mensajes en la base de datos y emite eventos (WebSockets) para que los demás jugadores lo vean en tiempo real.
+- `EmotionController.php`: Recibe los reportes periódicos de emociones detectadas por la cámara y los guarda en la base de datos como métricas de la sesión.
+- `FaceVerificationController.php`: El puente entre Laravel y el microservicio de Python. Envía la foto original y la foto actual al servicio de Python, esperando un veredicto de similitud antes de dejar entrar al jugador a la sala.
+- `GameController.php` / `ProfileController.php`: Controladores estándar de Laravel para crear/editar juegos (CRUD) y para modificar el perfil del usuario.

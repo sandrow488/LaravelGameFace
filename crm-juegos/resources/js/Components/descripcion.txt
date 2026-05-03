@@ -1,0 +1,8 @@
+# Componentes React
+
+Esta carpeta aloja los bloques de construcción visual e interactiva de la aplicación frontend. Al estar desarrollados con React, estos componentes son reutilizables en diferentes vistas.
+
+## Archivos Principales
+- `GameChat.jsx`: Componente encargado de renderizar la ventana de chat durante el juego. Se conecta mediante WebSockets (Laravel Echo) al canal de presencia para escuchar mensajes nuevos sin recargar la página, y muestra cuántos usuarios están activos.
+- `EmotionOverlay.jsx`: Un "overlay" flotante invisible que se superpone a la pantalla del juego. Captura video de la webcam del jugador cada pocos segundos, utiliza `face-api.js` (Inteligencia Artificial corriendo localmente en el navegador) para detectar su estado de ánimo, e informa de este estado al backend de Laravel mediante una petición HTTP POST.
+- `WebcamCapture.jsx`: Componente de utilidad reutilizable. Pide permisos de cámara al usuario y renderiza el flujo de video. Proporciona un botón para "tomar una foto" y la convierte en un archivo que el componente padre puede enviar al servidor. Se utiliza tanto en el registro facial (Dashboard) como en la verificación inicial (Play).

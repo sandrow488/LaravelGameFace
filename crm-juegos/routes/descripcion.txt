@@ -1,0 +1,13 @@
+# Rutas de la Aplicación
+
+Este directorio define todos los puntos de entrada (endpoints) HTTP y de WebSockets de la aplicación.
+
+## Archivos
+- `web.php`: Contiene todas las rutas a las que los usuarios acceden a través del navegador. Aquí se define qué controlador debe manejar cada URL. Incluye:
+  - Rutas públicas (Login, etc.)
+  - Rutas del Dashboard protegidas por autenticación.
+  - Rutas de la API interna consumida por React (verificación facial `/api/face/verify`, guardado de emociones `/game-sessions/{id}/emotions`, y el Chat en tiempo real `/messages`).
+- `channels.php`: Define las reglas de autorización para los canales de WebSockets (eventos en tiempo real). Aquí se define el canal `PresenceChannel` llamado `game.{session_id}`, el cual permite que los usuarios se conecten a la sala de chat de una partida, verifiquen su identidad y avisen a otros usuarios cuando se conectan o desconectan.
+
+## Propósito
+Actuar como el "mapa" del proyecto. Cuando un usuario o la aplicación React solicita una URL, Laravel busca en estos archivos para saber qué código debe ejecutarse en respuesta.

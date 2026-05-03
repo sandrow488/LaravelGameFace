@@ -1,0 +1,10 @@
+# Microservicio Facial
+
+Este directorio contiene el microservicio de reconocimiento facial desarrollado en Python utilizando FastAPI y DeepFace.
+
+## Archivos
+- `main.py`: Es el punto de entrada principal del servicio. Levanta un servidor web (FastAPI) que expone el endpoint `/verify`. Recibe dos imágenes enviadas por Laravel, las procesa temporalmente, y utiliza la inteligencia artificial (DeepFace) para validar si el rostro pertenece a la misma persona, devolviendo la distancia (margen de error) y un booleano `match`.
+- `requirements.txt`: (Si aplica) Dependencias del entorno de Python.
+
+## Propósito
+Desacoplar la pesada carga del procesamiento de IA del servidor web principal de Laravel, garantizando un rendimiento óptimo y manteniendo la responsabilidad de la IA en un servicio aislado.

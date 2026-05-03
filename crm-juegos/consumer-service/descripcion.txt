@@ -1,0 +1,9 @@
+# Servicio Consumidor de RabbitMQ
+
+Este directorio aloja el script de consumo de colas de mensajería (Event-Driven Architecture) en Python.
+
+## Archivos
+- `consumer.py`: Es un script que se mantiene en ejecución perpetua (long-polling) conectado a la instancia de RabbitMQ local. Su función es escuchar la cola `test` a donde el backend de Laravel emite eventos en formato JSON, interceptarlos y parsearlos.
+
+## Propósito
+Facilitar el modelo de arquitectura orientada a eventos. Aunque actualmente este consumidor simplemente imprime los eventos en consola, representa la infraestructura base que permite que tareas asíncronas pesadas (como notificaciones masivas, actualización de métricas o persistencia compleja) se gestionen fuera del ciclo de vida síncrono del cliente HTTP de Laravel.

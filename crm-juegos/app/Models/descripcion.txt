@@ -1,0 +1,13 @@
+# Modelos de Base de Datos (Eloquent)
+
+Este directorio contiene las clases que representan las tablas de la base de datos e interactúan con ella mediante el ORM (Object-Relational Mapping) de Laravel, llamado Eloquent.
+
+## Archivos Principales
+- `User.php`: Modelo central que representa a los usuarios del sistema (jugadores, gestores, administradores). Gestiona la autenticación, los roles y la ruta de la imagen facial registrada.
+- `GameSession.php`: Representa una partida individual jugada por un usuario. Guarda el momento de inicio, fin, la duración y la puntuación final obtenida en el juego.
+- `ChatMessage.php`: Modelo para almacenar el historial de mensajes enviados dentro de una sesión de juego específica. Se asocia con `User` (quien envía) y `GameSession` (dónde se envía).
+- `EmotionLog.php`: Registra cada emoción (feliz, triste, sorprendido, etc.) detectada por la cámara web del jugador durante una `GameSession`, incluyendo el nivel de confianza (confidence) de la detección.
+- `Game.php` / `Role.php`: Modelos base para la gestión de juegos disponibles en el catálogo y los roles de permisos.
+
+## Propósito
+Centralizar la lógica de relaciones entre entidades de la base de datos (por ejemplo, "Un Usuario tiene muchas Sesiones de Juego") y facilitar las consultas sin tener que escribir SQL crudo, manteniendo el código limpio y orientado a objetos.

@@ -8,55 +8,56 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import WebcamCapture from '@/Components/WebcamCapture';
 
+// Pantalla de Login: Modificada para requerir una foto facial del usuario
 export default function Login({ status, canResetPassword }) {
+    // ESTADOS:
+    // step: Controla en qué paso del login estamos (1 = Email/Password, 2 = Foto Facial)
     const [step, setStep] = useState(1);
     
+    // useForm de Inertia.js: Maneja el estado del formulario, peticiones y errores
     const { data, setData, post, processing, errors, reset, clearErrors } = useForm({
         email: '',
         password: '',
         remember: false,
-        image: null,
+        image: null, // Almacenará el archivo de imagen (foto temporal)
     });
 
+    // Pasa del paso 1 al paso 2 si el usuario ingresó sus credenciales
     const handleNext = (e) => {
         e.preventDefault();
         
+        // Validación básica en el cliente
         if (!data.email || !data.password) {
             return;
         }
-        setStep(2);
+        setStep(2); // Muestra la cámara
     };
 
-    const handleCapture = (file) => {
+    // Función que se ejecuta cuando el componente de cámara (<WebcamCapture>) emite una foto
+    const submitLogin = (file) => {
+        clearErrors();
+        // Guarda la imagen en el formulario. Al actualizar el estado 'data.image',
+        // se disparará el useEffect de abajo que enviará todo a Laravel.
         setData('image', file);
-        
-        
-        
-        
-        
-        
-        
     };
 
-    
+    // EFECTO DE ENVÍO AUTOMÁTICO:
+    // Se dispara en el momento en que data.image pasa de null a contener un archivo
     useEffect(() => {
         if (data.image) {
+            // Envía la petición POST a AuthenticatedSessionController@store
             post(route('login'), {
                 onStart: () => console.log("Iniciando POST a:", route('login')),
-                onFinish: () => reset('password'),
+                onFinish: () => reset('password'), // Por seguridad borra la contraseña
                 onError: (err) => {
                     console.error("Detalles del error de login:", err);
+                    // Si falla el login (contraseña mal, etc), borra la imagen y devuelve al paso 1
                     setData('image', null); 
                     setStep(1);
                 },
             });
         }
     }, [data.image]);
-
-    const submitLogin = (file) => {
-        clearErrors();
-        setData('image', file);
-    };
 
     return (
         <GuestLayout>
@@ -67,9 +68,12 @@ export default function Login({ status, canResetPassword }) {
                 <p className="text-sm text-gray-500 mt-1">Accede para jugar o administrar el catálogo</p>
             </div>
 
+            {/* Mensajes de estado (ej. "Contraseña restablecida correctamente") */}
             {status && <div className="mb-4 text-sm font-medium text-green-600 bg-green-50 p-3 rounded-lg text-center">{status}</div>}
 
             <form onSubmit={step === 1 ? handleNext : (e) => e.preventDefault()} className="space-y-4">
+                
+                {/* PASO 1: Credenciales tradicionales */}
                 {step === 1 && (
                     <>
                         <div>
@@ -114,6 +118,7 @@ export default function Login({ status, canResetPassword }) {
                         </div>
 
                         <div className="pt-4">
+                            {/* Botón para avanzar. Está desactivado si falta el correo o la contraseña */}
                             <PrimaryButton className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-md text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform hover:-translate-y-0.5 transition-all outline-none" disabled={processing || !data.email || !data.password}>
                                 Siguiente: Verificación Facial
                             </PrimaryButton>
@@ -132,13 +137,18 @@ export default function Login({ status, canResetPassword }) {
                     </>
                 )}
 
+                {/* PASO 2: Verificación de cámara */}
                 {step === 2 && (
                     <div className="flex flex-col items-center">
                         <p className="text-gray-600 mb-4 text-center font-medium">Por tu seguridad, necesitamos una captura de tu rostro.</p>
+                        
                         <InputError message={errors.image} className="mb-4 text-center" />
+                        
+                        {/* Invoca al componente reutilizable de cámara. 
+                            Cuando se toma la foto, llama a 'submitLogin' */}
                         <WebcamCapture 
                             onCapture={submitLogin}
-                            onCancel={() => setStep(1)}
+                            onCancel={() => setStep(1)} // Vuelve al paso 1
                             isProcessing={processing}
                             buttonText="Capturar y Entrar"
                         />

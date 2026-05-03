@@ -1,0 +1,10 @@
+# Vistas / Páginas React (Inertia.js)
+
+Este directorio contiene todas las pantallas (páginas completas) de la aplicación. Gracias a Inertia.js, estas pantallas actúan como vistas clásicas (similares a los archivos Blade), pero están escritas completamente en React, lo que permite un frontend dinámico sin recargas de página (SPA - Single Page Application).
+
+## Archivos y Subcarpetas
+- `Dashboard.jsx`: Es la pantalla principal a la que el usuario accede tras hacer login. Aquí se muestra el catálogo de juegos disponibles (traídos desde el GameController en Laravel).
+- `Games/Play.jsx`: La sala de juego. Esta vista integra el iFrame del juego de Unity/HTML5, e inyecta los componentes `GameChat` y `EmotionOverlay`. Además, es la encargada de enviar la petición de inicio y fin de partida al backend.
+- `Auth/`: Páginas generadas por Laravel Breeze para la autenticación. Destaca `Login.jsx`, que fue personalizado para incluir el componente `WebcamCapture` con el fin de tomar una foto temporal en el momento de iniciar sesión.
+- `Profile/`: Páginas para la gestión de la cuenta del usuario. Destaca el componente `FaceEnrollmentForm.jsx` dentro de `Partials/`, donde el usuario sube su foto base "oficial" (enrolamiento) que el microservicio de Python utilizará para comparar la identidad.
+- `Games/Index.jsx`, `Create.jsx`, `Edit.jsx`: Pantallas CRUD exclusivas para los roles de 'administrador' y 'gestor', usadas para subir nuevos juegos y ocultarlos/publicarlos.
